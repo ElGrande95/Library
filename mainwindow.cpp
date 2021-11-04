@@ -39,12 +39,15 @@ void MainWindow::on_login_clicked()
 
     if(qry.exec()){
         if (qry.next()) {
-            this->hide();
+
+            hide();
+
             userDialog = new User(this);
 
             userDialog->setLabelTitle("Username " + username);
 
             userDialog->show();
+
        }
         else {
             ui->statusbar->showMessage("Username and password is not correct", 4000);

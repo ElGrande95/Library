@@ -22,6 +22,8 @@ bool connOpen(QSqlDatabase& mydb)
 }
 
 
+
+
 QString space(const QString &s)
 {
     QString s2="";

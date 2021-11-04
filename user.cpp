@@ -5,7 +5,7 @@
 #include <QMessageBox>
 #include <QString>
 #include "member.hh"
-#include "ui_addbook.h"
+#include "rent.hh"
 
 User::User(QWidget *parent) :
     QDialog(parent),
@@ -108,9 +108,10 @@ void User::on_newMember_clicked()
 
 void User::on_logout_clicked()
 {
+    this->close();
+
     MainWindow *login = new MainWindow(this);
     login->show();
-    this->hide();
 }
 
 
@@ -118,6 +119,7 @@ void User::on_logout_clicked()
 
 void User::on_rent_clicked()
 {
-
+    Rent *rent = new Rent(this);
+    rent->show();
 }
 
