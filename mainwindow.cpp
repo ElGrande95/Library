@@ -35,7 +35,7 @@ void MainWindow::on_login_clicked()
     connOpen(mydb);
 
     QSqlQuery qry;
-    qry.prepare("select * from employed where username = '"+username+"' and password ='"+password+"'");
+    qry.prepare("select * from employed where username = '"+username+"' and password ='"+password+"';");
 
     if(qry.exec()){
         if (qry.next()) {

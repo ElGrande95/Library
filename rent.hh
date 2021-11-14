@@ -5,7 +5,8 @@
 #include "functions.hh"
 #include <QStandardItemModel>
 #include <QMessageBox>
-
+#include <QSqlRelationalTableModel>
+#include <QString>
 
 namespace Ui {
 class Rent;
@@ -19,6 +20,12 @@ public:
     explicit Rent(QWidget *parent = nullptr);
     ~Rent();
 
+    void showTableModel();
+    void showRelTableModel();
+
+    void searchTableModel(const QString &book, const QString &writer);
+    void searchRelTableModel(const QString &book, const QString &writer, const QString &id);
+
 private slots:
 
     void on_next_clicked();
@@ -29,17 +36,18 @@ private slots:
 
     void on_writer_textEdited(const QString &text);
 
-    void on_rentBook_clicked();
-
-    void on_showBooks_clicked();
-
-    void on_showMember_clicked();
+    void on_rentBack_clicked();
 
     void on_table_clicked(const QModelIndex &index);
+
+    void on_showBooksMember_toggled(bool checked);
+
+    void on_id_textEdited(const QString &text);
 
 private:
     Ui::Rent *ui;
     QSqlTableModel *model;
+    QSqlRelationalTableModel *modelRel;
 
 };
 

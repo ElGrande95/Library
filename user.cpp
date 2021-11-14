@@ -32,7 +32,7 @@ void User::on_addBook_clicked()
     QString writer = space(ui->Writer->text());
     int year = ui->year->text().toInt();
     int number = ui->number->text().toInt();
-
+    int id;
 
     QSqlDatabase mydb;
     connOpen(mydb);
@@ -42,19 +42,26 @@ void User::on_addBook_clicked()
     if ( mydb.tables().contains( QLatin1String("book") )) {
 
         qry.prepare("select * from book "
-                    "where book = '"+book+"' and writer ='"+writer+"' and year = '"+QString::number(year)+"'");
+                    "where book = '"+book+"' and writer ='"+writer+"' and year = '"+QString::number(year)+"';");
 
         if(qry.exec()){
 
             if(qry.next()) {
                 qry.prepare("UPDATE book SET number = number + '"+QString::number(number)+"'"
-                            "WHERE book = '"+book+"' and writer ='"+writer+"' and year = '"+QString::number(year)+"'");
+                            "WHERE book = '"+book+"' and writer ='"+writer+"' and year = '"+QString::number(year)+"';");
 
                 if(qry.exec())
                     ui->notice->setText(book + " added");            }
             else {
-                qry.prepare("INSERT INTO book (book,writer, year, number) VALUES (?,?,?,?);");
 
+                qry.prepare("select count(*) from book ;");
+                qry.exec();
+                qry.next();
+                id = qry.value(0).toInt();
+
+                qry.prepare("INSERT INTO book (idBook,book,writer, year, number) VALUES (?,?,?,?,?);");
+
+                qry.addBindValue(id);
                 qry.addBindValue(book);
                 qry.addBindValue(writer);
                 qry.addBindValue(year);
@@ -70,14 +77,16 @@ void User::on_addBook_clicked()
     }
     else {
         qry.prepare("create table book "
-                    "(book text, "
+                    "(idBook integer,"
+                    "book text, "
                     "writer text, "
                     "year integer, "
-                    "number integer)");
+                    "number integer);");
         qry.exec();
 
-        qry.prepare("INSERT INTO book (book,writer, year, number) VALUES (?,?,?,?);");
+        qry.prepare("INSERT INTO book (idBook,book,writer, year, number) VALUES (?,?,?,?,?);");
 
+        qry.addBindValue(0);
         qry.addBindValue(book);
         qry.addBindValue(writer);
         qry.addBindValue(year);

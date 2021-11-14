@@ -5,6 +5,8 @@ void connClose(QSqlDatabase& mydb)
 {
     mydb.close();
     mydb.removeDatabase(QSqlDatabase::defaultConnection);
+    qDebug() << "Close database connection";
+
 }
 
 bool connOpen(QSqlDatabase& mydb)
@@ -43,3 +45,5 @@ QString space(const QString &s)
     }
     return s2.remove(s2.size()-1, 1);
 }
+
+

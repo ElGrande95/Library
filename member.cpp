@@ -33,9 +33,9 @@ void Member::on_pushButton_clicked()
         qry.prepare("select count(*) from member ");
         qry.exec();
         qry.next();
-        id = qry.value(0).toInt();
+        id = qry.value(0).toInt()+1;
 
-        qry.prepare("INSERT INTO member (id,name, surname, contact) VALUES (?,?,?,?);");
+        qry.prepare("INSERT INTO member (idMember,name, surname, contact) VALUES (?,?,?,?);");
 
         qry.addBindValue(id);
         qry.addBindValue(name);
@@ -51,13 +51,13 @@ void Member::on_pushButton_clicked()
     }
     else {
         qry.prepare("create table member "
-                    "(id text, "
+                    "(idMember integer, "
                     "name text, "
-                    "surname integer, "
-                    "contact integer)");
+                    "surname text, "
+                    "contact integer);");
         qry.exec();
 
-        qry.prepare("INSERT INTO member (id,name, surname, contact) VALUES (?,?,?,?);");
+        qry.prepare("INSERT INTO member (idMember,name, surname, contact) VALUES (?,?,?,?);");
 
         qry.addBindValue(1);
         qry.addBindValue(name);

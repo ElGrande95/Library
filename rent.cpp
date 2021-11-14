@@ -8,24 +8,9 @@ Rent::Rent(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    model = new QSqlTableModel();
+    ui->showBooksMember->setCheckable(true);
 
-    QSqlDatabase mydb;
-    connOpen(mydb);
-    QSqlQuery *qry = new QSqlQuery(mydb);
-
-    qry->prepare("select * from book");
-    qry->exec();
-
-    model = new QSqlTableModel();
-    model->setTable("book");
-    model->select();
-
-    ui->table->setModel(model);
-    ui->table->model()->sort(1);
-
-    connClose(mydb);
-
+    showTableModel();
 }
 
 Rent::~Rent()
@@ -37,79 +22,148 @@ Rent::~Rent()
 
 void Rent::on_next_clicked()
 {
-    QString book = space(ui->book->text());
-    QString writer = space(ui->writer->text());
+    if(!ui->showBooksMember->isChecked()){
 
-    QModelIndex index = ui->table->currentIndex();
+        QString book = space(ui->book->text());
+        QString writer = space(ui->writer->text());
 
-    if(index.isValid()){
-        for(int i = index.row()+1; i < ui->table->model()->rowCount(); i++){
+        QModelIndex index = ui->table->currentIndex();
 
-            QModelIndex indexB = ui->table->model()->index(i,0);
-            QModelIndex indexW = ui->table->model()->index(i,1);
+        if(index.isValid()){
+            for(int i = index.row()+1; i < ui->table->model()->rowCount(); i++){
 
-            if((ui->table->model()->data(indexB).toString()).contains(book) &&
-                    (ui->table->model()->data(indexW).toString()).contains(writer)) {
+                QModelIndex indexB = ui->table->model()->index(i,1);
+                QModelIndex indexW = ui->table->model()->index(i,2);
 
-                ui->table->setCurrentIndex(indexB);
-                return;
+                if((ui->table->model()->data(indexB).toString()).contains(book) &&
+                        (ui->table->model()->data(indexW).toString()).contains(writer)) {
+
+                    ui->table->setCurrentIndex(indexB);
+                    return;
+                }
+            }
+            for(int i = 0; i <= index.row(); i++){
+
+                QModelIndex indexB = ui->table->model()->index(i,1);
+                QModelIndex indexW = ui->table->model()->index(i,2);
+
+                if((ui->table->model()->data(indexB).toString()).contains(book) &&
+                        (ui->table->model()->data(indexW).toString()).contains(writer)) {
+
+                    ui->table->setCurrentIndex(indexB);
+                    return;
+                }
             }
         }
-        for(int i = 0; i <= index.row(); i++){
-
-            QModelIndex indexB = ui->table->model()->index(i,0);
-            QModelIndex indexW = ui->table->model()->index(i,1);
-
-            if((ui->table->model()->data(indexB).toString()).contains(book) &&
-                    (ui->table->model()->data(indexW).toString()).contains(writer)) {
-
-                ui->table->setCurrentIndex(indexB);
-                return;
-            }
+        else {
+            QMessageBox::warning(this, "Warning", "No cell selected!");
         }
     }
     else {
-        QMessageBox::warning(this, "Warning", "No cell selected!");
-    }
 
+        QString id = space(ui->id->text());
+
+        QModelIndex index = ui->table->currentIndex();
+
+        if(index.isValid()){
+            for(int i = index.row()+1; i < ui->table->model()->rowCount(); i++){
+
+                QModelIndex indexId = ui->table->model()->index(i,0);
+
+                if((ui->table->model()->data(indexId).toString()).contains(id)) {
+
+                    ui->table->setCurrentIndex(indexId);
+                    return;
+                }
+            }
+            for(int i = 0; i <= index.row(); i++){
+
+                QModelIndex indexId = ui->table->model()->index(i,0);
+
+                if((ui->table->model()->data(indexId).toString()).contains(id)) {
+
+                    ui->table->setCurrentIndex(indexId);
+                    return;
+                }
+            }
+        }
+        else {
+            QMessageBox::warning(this, "Warning", "No cell selected!");
+        }
+    }
 }
 
 
 void Rent::on_Back_clicked()
 {
-    QString book = space(ui->book->text());
-    QString writer = space(ui->writer->text());
+    if(!ui->showBooksMember->isChecked()){
 
-    QModelIndex index = ui->table->currentIndex();
+        QString book = space(ui->book->text());
+        QString writer = space(ui->writer->text());
 
-    if(index.isValid()){
-        for(int i = index.row()-1; i >= 0; i--){
+        QModelIndex index = ui->table->currentIndex();
 
-            QModelIndex indexB = ui->table->model()->index(i,0);
-            QModelIndex indexW = ui->table->model()->index(i,1);
+        if(index.isValid()){
+            for(int i = index.row()-1; i >= 0; i--){
 
-            if((ui->table->model()->data(indexB).toString()).contains(book) &&
-                    (ui->table->model()->data(indexW).toString()).contains(writer)) {
+                QModelIndex indexB = ui->table->model()->index(i,1);
+                QModelIndex indexW = ui->table->model()->index(i,2);
 
-                ui->table->setCurrentIndex(indexB);
-                return;
+                if((ui->table->model()->data(indexB).toString()).contains(book) &&
+                        (ui->table->model()->data(indexW).toString()).contains(writer)) {
+
+                    ui->table->setCurrentIndex(indexB);
+                    return;
+                }
+            }
+            for(int i = ui->table->model()->rowCount()-1; i >= index.row(); i--){
+
+                QModelIndex indexB = ui->table->model()->index(i,1);
+                QModelIndex indexW = ui->table->model()->index(i,2);
+
+                if((ui->table->model()->data(indexB).toString()).contains(book) &&
+                        (ui->table->model()->data(indexW).toString()).contains(writer)) {
+
+                    ui->table->setCurrentIndex(indexB);
+                    return;
+                }
             }
         }
-        for(int i = ui->table->model()->rowCount()-1; i >= index.row(); i--){
-
-            QModelIndex indexB = ui->table->model()->index(i,0);
-            QModelIndex indexW = ui->table->model()->index(i,1);
-
-            if((ui->table->model()->data(indexB).toString()).contains(book) &&
-                    (ui->table->model()->data(indexW).toString()).contains(writer)) {
-
-                ui->table->setCurrentIndex(indexB);
-                return;
-            }
+        else {
+            QMessageBox::warning(this, "Warning", "No cell selected!");
         }
     }
+
     else {
-        QMessageBox::warning(this, "Warning", "No cell selected!");
+        QString id = space(ui->id->text());
+
+        QModelIndex index = ui->table->currentIndex();
+
+        if(index.isValid()){
+            for(int i = index.row()-1; i >= 0; i--){
+
+                QModelIndex indexId = ui->table->model()->index(i,0);
+
+                if((ui->table->model()->data(indexId).toString()).contains(id)) {
+
+                    ui->table->setCurrentIndex(indexId);
+                    return;
+                }
+            }
+            for(int i = ui->table->model()->rowCount()-1; i >= index.row(); i--){
+
+                QModelIndex indexId = ui->table->model()->index(i,0);
+
+                if((ui->table->model()->data(indexId).toString()).contains(id)) {
+
+                    ui->table->setCurrentIndex(indexId);
+                    return;
+                }
+            }
+        }
+        else {
+            QMessageBox::warning(this, "Warning", "No cell selected!");
+        }
     }
 }
 
@@ -118,29 +172,15 @@ void Rent::on_book_textEdited(const QString &text)
 {
     QString book = space(text);
     QString writer = space(ui->writer->text());
+    QString id = space(ui->id->text());
 
-    if (book.isEmpty() && writer.isEmpty()){
-        QModelIndex *noIndex = new QModelIndex();
-        ui->table->setCurrentIndex(*noIndex);
+    if(!ui->showBooksMember->isChecked()){
 
-        return;
+        searchTableModel(book, writer);
     }
+    else {
 
-    for (int i=0; i < ui->table->model()->rowCount(); i++){
-
-        QModelIndex indexB = ui->table->model()->index(i,0);
-        QModelIndex indexW = ui->table->model()->index(i,1);
-
-        if((ui->table->model()->data(indexB).toString()).contains(book) &&
-                (ui->table->model()->data(indexW).toString()).contains(writer)) {
-
-            ui->table->setCurrentIndex(indexB);
-            return;
-        }
-        else {
-            QModelIndex *noIndex = new QModelIndex();
-            ui->table->setCurrentIndex(*noIndex);
-        }
+        searchRelTableModel(book, writer, id);
     }
 
 }
@@ -150,8 +190,209 @@ void Rent::on_writer_textEdited(const QString &text)
 {
     QString writer = space(text);
     QString book = space(ui->book->text());
+    QString id = space(ui->id->text());
+
+    if(!ui->showBooksMember->isChecked()){
+
+        searchTableModel(book,writer);
+    }
+    else {
+
+        searchRelTableModel(book, writer, id);
+    }
+}
 
 
+void Rent::on_rentBack_clicked()
+{
+    if(!ui->showBooksMember->isChecked()){
+
+        QModelIndex index = ui->table->model()->index(ui->table->currentIndex().row(),0);
+        int idBook = ui->table->model()->data(index).toInt();
+        int idMember = ui->id->text().toInt();
+        QModelIndex indexNum = ui->table->model()->index(index.row(),4);
+        int number = ui->table->model()->data(indexNum).toInt();
+
+        if(number <= 0){
+            QMessageBox::warning(this,"Warning", "Have not book!");
+            return;
+        }
+
+        QSqlDatabase mydb;
+        connOpen(mydb);
+
+        QSqlQuery qry;
+
+        qry.prepare("select * from member where idMember = '"+QString::number(idMember)+"' ;");
+        qry.exec();
+        if(!qry.next()){
+            connClose(mydb);
+            QMessageBox::warning(this,"Warning", "Wrong idMember");
+            return;
+        }
+
+        qry.prepare("select count(*) from rent where idMember = '"+QString::number(idMember)+"' ;");
+        qry.exec();
+        qry.next();
+        if(qry.value(0).toInt() >= 10){
+
+            connClose(mydb);
+            QMessageBox::warning(this,"Warning", "Limit of books is 10!");
+            return;
+        }
+
+        if ( !mydb.tables().contains( QLatin1String("rent") )) {
+
+            qry.prepare("create table rent "
+                        "(idMember integer, "
+                        "idBook integer);");
+            qry.exec();
+        }
+
+        qry.prepare("select count(*) from rent where idBook = '"+QString::number(idBook)+"' "
+                                                "and idMember = '"+QString::number(idMember)+"' ;");
+        qry.exec();
+        qry.next();
+        if(qry.value(0).toInt() != 0){
+
+            connClose(mydb);
+            QMessageBox::warning(this,"Warning", "You have this book!");
+            return;
+        }
+
+        qry.prepare("INSERT INTO rent (idMember,idBook) VALUES (?,?);");
+
+        qry.addBindValue(idMember);
+        qry.addBindValue(idBook);
+
+        if(qry.exec()){
+
+            qry.prepare("UPDATE book SET number = number -1"
+                        "WHERE idBook = '"+QString::number(idBook)+"';");
+
+            qry.exec();
+
+            ui->table->model()->setData(indexNum, number-1, Qt::EditRole);
+            index = ui->table->model()->index(index.row(),1);
+            ui->notice->setText(ui->table->model()->data(index).toString() + " rented.");
+        }
+        else{
+            index = ui->table->model()->index(index.row(),1);
+            ui->notice->setText(ui->table->model()->data(index).toString() + " not rent.");
+            return;
+        }
+
+        QModelIndex *noIndex = new QModelIndex();
+        ui->table->setCurrentIndex(*noIndex);
+
+        ui->book->setText("");
+        ui->writer->setText("");
+        connClose(mydb);
+    }
+
+
+    else {
+        QModelIndex index = ui->table->currentIndex();
+        QModelIndex indexIdBook = ui->table->model()->index(index.row(),1);
+        QModelIndex indexIdMember = ui->table->model()->index(index.row(),0);
+
+        int idBook = ui->table->model()->data(indexIdBook).toInt();
+        int idMember = ui->table->model()->data(indexIdMember).toInt();
+
+        QSqlDatabase mydb;
+        connOpen(mydb);
+
+        QSqlQuery qry;
+
+        qry.prepare("delete from rent where idMember = '"+QString::number(idMember)+"'"
+                                         " and idBook = '"+QString::number(idBook)+"' ;");
+        qry.exec();
+
+        qry.prepare("UPDATE book SET number = number + 1 WHERE idBook = '"+QString::number(idBook)+"' ;");
+        if(qry.exec())
+            qDebug() << 1;
+
+        QModelIndex *noIndex = new QModelIndex();
+        ui->table->setCurrentIndex(*noIndex);
+
+        ui->book->setText("");
+        ui->writer->setText("");
+        connClose(mydb);
+
+        showRelTableModel();
+
+    }
+}
+
+
+void Rent::on_table_clicked(const QModelIndex &index)
+{
+    if(!ui->showBooksMember->isChecked()){
+
+        ui->book->setText(ui->table->model()->data(ui->table->model()->index(index.row(), 1)).toString());
+        ui->writer->setText(ui->table->model()->data(ui->table->model()->index(index.row(), 2)).toString());
+    }
+    else {
+        ui->book->setText(ui->table->model()->data(ui->table->model()->index(index.row(), 2)).toString());
+        ui->writer->setText(ui->table->model()->data(ui->table->model()->index(index.row(), 3)).toString());
+        ui->id->setText(ui->table->model()->data(ui->table->model()->index(index.row(), 0)).toString());
+    }
+}
+
+
+void Rent::on_showBooksMember_toggled(bool checked)
+{
+    if(checked){
+        showRelTableModel();
+    }
+    else {
+        showTableModel();
+    }
+
+    ui->id->setText("");
+    ui->book->setText("");
+    ui->writer->setText("");
+}
+
+
+void Rent::showTableModel(){
+    model = new QSqlTableModel();
+
+    QSqlDatabase mydb;
+    connOpen(mydb);
+
+    model = new QSqlTableModel();
+    model->setTable("book");
+    model->select();
+
+    ui->table->setModel(model);
+    ui->table->model()->sort(2);
+
+    connClose(mydb);
+}
+
+void Rent::showRelTableModel()
+{
+    modelRel = new QSqlRelationalTableModel();
+
+    QSqlDatabase mydb;
+    connOpen(mydb);
+
+    modelRel = new QSqlRelationalTableModel();
+    modelRel->setTable("rent");
+    modelRel->setRelation(1, QSqlRelation("book", "idBook","idBook, book, writer, year"));
+    modelRel->select();
+
+    ui->table->setModel(modelRel);
+    ui->table->model()->sort(0);
+
+    ui->notice->setText("");
+
+    connClose(mydb);
+}
+
+void Rent::searchTableModel(const QString &book, const QString &writer)
+{
     if (book.isEmpty() && writer.isEmpty()){
         QModelIndex *noIndex = new QModelIndex();
         ui->table->setCurrentIndex(*noIndex);
@@ -160,14 +401,42 @@ void Rent::on_writer_textEdited(const QString &text)
     }
 
     for (int i=0; i < ui->table->model()->rowCount(); i++){
-
-        QModelIndex indexB = ui->table->model()->index(i,0);
-        QModelIndex indexW = ui->table->model()->index(i,1);
+        QModelIndex indexB = ui->table->model()->index(i,1);
+        QModelIndex indexW = ui->table->model()->index(i,2);
 
         if((ui->table->model()->data(indexB).toString()).contains(book) &&
                 (ui->table->model()->data(indexW).toString()).contains(writer)) {
 
-            ui->table->setCurrentIndex(indexB);
+            ui->table->setCurrentIndex(ui->table->model()->index(i,0));
+            return;
+        }
+        else {
+            QModelIndex *noIndex = new QModelIndex();
+            ui->table->setCurrentIndex(*noIndex);
+        }
+    }
+}
+
+void Rent::searchRelTableModel(const QString &book, const QString &writer, const QString &id)
+{
+    if (book.isEmpty() && writer.isEmpty() && id.isEmpty()){
+        QModelIndex *noIndex = new QModelIndex();
+        ui->table->setCurrentIndex(*noIndex);
+
+        return;
+    }
+
+    for (int i=0; i < ui->table->model()->rowCount(); i++){
+
+        QModelIndex indexB = ui->table->model()->index(i,2);
+        QModelIndex indexW = ui->table->model()->index(i,3);
+        QModelIndex indexId = ui->table->model()->index(i,0);
+
+        if((ui->table->model()->data(indexB).toString()).contains(book) &&
+                (ui->table->model()->data(indexW).toString()).contains(writer) &&
+                (ui->table->model()->data(indexId).toString()).contains(id)) {
+
+            ui->table->setCurrentIndex(indexId);
             return;
         }
         else {
@@ -178,60 +447,15 @@ void Rent::on_writer_textEdited(const QString &text)
 }
 
 
-void Rent::on_rentBook_clicked()
+void Rent::on_id_textEdited(const QString &text)
 {
+    QString writer = space(ui->writer->text());
+    QString book = space(ui->book->text());
+    QString id = space(text);
 
-}
+    if(ui->showBooksMember->isChecked()){
 
-
-void Rent::on_showBooks_clicked()
-{
-    model = new QSqlTableModel();
-
-    QSqlDatabase mydb;
-    connOpen(mydb);
-    QSqlQuery *qry = new QSqlQuery(mydb);
-
-    qry->prepare("select * from book");
-    qry->exec();
-
-    model = new QSqlTableModel();
-    model->setTable("book");
-    model->select();
-
-    ui->table->setModel(model);
-    ui->table->model()->sort(1);
-
-    connClose(mydb);
-}
-
-
-void Rent::on_showMember_clicked()
-{
-    model = new QSqlTableModel();
-
-    QSqlDatabase mydb;
-    connOpen(mydb);
-    QSqlQuery *qry = new QSqlQuery(mydb);
-
-    qry->prepare("select * from member");
-    qry->exec();
-
-    model = new QSqlTableModel();
-    model->setTable("member");
-    model->select();
-
-    ui->table->setModel(model);
-    ui->table->model()->sort(0);
-
-    connClose(mydb);
-}
-
-
-void Rent::on_table_clicked(const QModelIndex &index)
-{
-    ui->book->setText(ui->table->model()->data(ui->table->model()->index(index.row(),0)).toString());
-    ui->writer->setText(ui->table->model()->data(ui->table->model()->index(index.row(),1)).toString());
-
+        searchRelTableModel(book, writer, id);
+    }
 }
 

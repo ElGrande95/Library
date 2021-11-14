@@ -16,14 +16,34 @@
   <layout class="QHBoxLayout" name="horizontalLayout_3">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="3" column="0">
-      <widget class="QLabel" name="label">
+     <item row="6" column="2">
+      <widget class="QLineEdit" name="id"/>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="writerLabel">
        <property name="text">
         <string>Writer</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0" colspan="4">
+     <item row="1" column="4">
+      <widget class="QPushButton" name="Back">
+       <property name="text">
+        <string>Back</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QLineEdit" name="writer"/>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>User id</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0" colspan="5">
       <widget class="QTableView" name="table">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -33,74 +53,47 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="Back">
+     <item row="1" column="2">
+      <widget class="QLineEdit" name="book"/>
+     </item>
+     <item row="2" column="2">
+      <layout class="QHBoxLayout" name="horizontalLayout"/>
+     </item>
+     <item row="4" column="3" colspan="2">
+      <widget class="QPushButton" name="rentBack">
        <property name="text">
-        <string>Back</string>
+        <string>Rent/back</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="3">
+     <item row="6" column="3" colspan="2">
+      <widget class="QPushButton" name="showBooksMember">
+       <property name="text">
+        <string>Show books/member</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="bookLabel">
+       <property name="text">
+        <string>Book</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="4">
       <layout class="QHBoxLayout" name="horizontalLayout_2"/>
      </item>
-     <item row="1" column="2">
+     <item row="1" column="3">
       <widget class="QPushButton" name="next">
        <property name="text">
         <string>Next</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
+     <item row="7" column="0" colspan="3">
+      <widget class="QLabel" name="notice">
        <property name="text">
-        <string>Book</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLineEdit" name="writer"/>
-     </item>
-     <item row="5" column="1">
-      <widget class="QLineEdit" name="id"/>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="book"/>
-     </item>
-     <item row="3" column="2">
-      <widget class="QPushButton" name="rentBook">
-       <property name="text">
-        <string>Rent</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="3">
-      <widget class="QPushButton" name="showMember">
-       <property name="text">
-        <string>Show member</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout"/>
-     </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>User id</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="2">
-      <widget class="QPushButton" name="takeBook">
-       <property name="text">
-        <string>Take</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="3">
-      <widget class="QPushButton" name="showBooks">
-       <property name="text">
-        <string>Show books</string>
+        <string/>
        </property>
       </widget>
      </item>
